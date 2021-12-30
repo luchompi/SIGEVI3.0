@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'Registration.apps.RegistrationConfig',
     'Personas.apps.PersonasConfig',
     'Gestion.apps.GestionConfig',
+    'Ventas.apps.VentasConfig',
 ]
 
 MIDDLEWARE = [
