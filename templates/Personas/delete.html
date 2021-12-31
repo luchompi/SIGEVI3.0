@@ -1,0 +1,41 @@
+{% extends 'base/body.html' %}
+{%load crispy_forms_tags%}
+{%load bootstrap5%}
+{%bootstrap_css%}
+{% load bootstrap_icons %}
+
+
+{% block title %}
+    Borrar Cliente - SIGEVI
+{% endblock title %}
+    
+
+
+{% block content %}
+    
+<div class="row justify-content-md-center">
+	<div class="col col-lg-5">
+    <form method="post">
+      {%csrf_token%}
+        <div class="card">
+            <div class="card-header">
+              Detalles de Cliente 
+            </div>
+            <div class="card-body">
+              <h5 class="card-title">Cliente {{object.iden}} : {{object.nombre}} {{object.apellidos}}</h5>
+              <p class="card-text">Datos de Cliente:</p>
+              <p class="card-text">Nombres: {{object.nombre}} {{object.apellidos}}</p>
+              <p class="card-text">Direccion: {{object.direccion}}</p>
+              <p class="card-text">Correo: {{object.correo}}</p>
+              <h5>Está a punto de borrar estos datos, ¿proceder?</h5>
+              <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                <a  class="btn btn-primary" href="/personas/clientes/">Atrás</a>
+                <button class="btn btn-danger" type="submit">Borrar</button>
+            </div>
+            </div>
+        </div>
+    </form>
+    </div>
+</div>
+{% endblock content %}
+    

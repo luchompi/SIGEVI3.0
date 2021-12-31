@@ -1,0 +1,57 @@
+{% load static %}
+{%load bootstrap5%}
+{%bootstrap_css%}
+{% load bootstrap_icons %}
+<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
+    <div class="container-fluid">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+        <a class="navbar-brand">SIGEVI</a>
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">     
+      {% if user.is_anonymous %}
+        
+      {% else %}
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Personas
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <li><a class="dropdown-item" href="{% url 'personas:clienteIndex' %}">Gestion de Clientes</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="{% url 'personas:proveedorIndex' %}">Gestión de Proveedores</a></li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Inventario
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <li><a class="dropdown-item" href="{% url 'gestion:marcaIndex' %}">Gestión de Marcas</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="{% url 'gestion:categoriaIndex' %}">Gestión de Categorías</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="{% url 'gestion:productoIndex' %}">Gestión de Productos</a></li>
+  
+            </ul>
+          </li>
+          </li>
+        </ul>
+      </div>
+    </div>
+    </div>
+      <div class="dropdown">
+        
+        <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false">
+          Sesión iniciada como {{user.username}}
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+          
+          <li><a class="dropdown-item" type="button" href="/auth/logout">Cerrar Sesión</a></li>
+        </ul>
+      {%endif%}
+    </div>
+  </nav>
+  

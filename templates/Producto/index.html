@@ -1,0 +1,90 @@
+{% extends "base/body.html" %}
+{%load crispy_forms_tags%}
+{%load bootstrap5%}
+{%bootstrap_css%}
+{% load bootstrap_icons %}
+{% block title %}
+Listado de Productos - SIGEVI
+    
+{% endblock title %}
+
+
+{% block header %}
+    {% if user.is_authenticated %}
+        <h1>Listado General de Productos <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            Añadir Nuevo
+          </button></h1>
+    
+    {% endif %}
+{% endblock header %}
+    
+
+{% block content %}
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Agregar Nuevo Producto</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form method="post">
+            <div class="modal-body">
+            
+                {% csrf_token %}
+                {{form|crispy}}
+            
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button class="btn btn-success" type="submit">Guardar</button>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+
+
+    {% if query %}
+    <div class="container-fluid">
+            <div>
+                <form method="get">
+                    {% include './search.html' %}
+                </form>
+            </div>
+        <hr class="dropdown-divider">
+    </div>
+
+
+        <div class="container-fluid">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">Producto</th>
+                            <th scope="col">Opciones</th>        
+                        </tr>
+                        </thead>
+                        <tbody>  
+                            {% for row in query %}
+                            <tr>
+                                <th scope="row">{{row.id}}</th>
+                                <td>{{row.nombre}} - {{row.categoria}}</td>
+                                <td><a class="btn btn-info" href="{% url 'gestion:productoUpdate' row.id %}">{% bs_icon 'info-square' %}</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+            {% else %}
+        </div>   
+        <p>No hay registros!, Esto puede pasar por dos razones:</p>
+        <p>1. No existen coincidencias con los criterios de búsqueda</p>
+        <p>2. No existen Registros o no se puede acceder a ellos</p>
+        <p>Si sigue viendo esta pantalla y no ha realizado ninguna consulta, contacte al proveedor del software para mayor información</p>
+            
+    {% endif %}
+
+    
+{% endblock content %}

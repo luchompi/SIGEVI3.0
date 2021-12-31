@@ -1,0 +1,9 @@
+{% load static %}
+{%load bootstrap5%}
+{%bootstrap_css%}
+{% load bootstrap_icons %}
+<div class="input-group flex-nowrap">
+    <span class="input-group-text" id="addon-wrapping">{% bs_icon 'search' %}</span>
+    <input type="text" class="form-control" placeholder="Ingrese una Identificación para buscar un cliente" name="identificacion" aria-describedby="addon-wrapping">
+    <input type="submit" value="buscar" class="btn btn-success">
+</div>

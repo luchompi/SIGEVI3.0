@@ -1,0 +1,39 @@
+{% extends 'base/body.html' %}
+{%load crispy_forms_tags%}
+{%load bootstrap5%}
+{%bootstrap_css%}
+{% load bootstrap_icons %}
+
+
+{% block title %}
+    Borrar Categoría - SIGEVI
+{% endblock title %}
+    
+
+
+{% block content %}
+    
+<div class="row justify-content-md-center">
+	<div class="col col-lg-5">
+    <form method="post">
+      {%csrf_token%}
+        <div class="card">
+            <div class="card-header">
+              Detalles de Categoría 
+            </div>
+            <div class="card-body">
+              <h5 class="card-title">Categoría {{object.id}} : {{object.nombre}}</h5>
+              <p class="card-text">Datos de Categoría:</p>
+              <p class="card-text">Nombre: {{object.nombre}}</p>
+              <h5>Está a punto de borrar estos datos, ¿proceder?</h5>
+              <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                <a  class="btn btn-primary" href="/gestion/categoria/">Atrás</a>
+                <button class="btn btn-danger" type="submit">Borrar</button>
+            </div>
+            </div>
+        </div>
+    </form>
+    </div>
+</div>
+{% endblock content %}
+    

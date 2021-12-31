@@ -1,0 +1,43 @@
+{% extends 'base/body.html' %}
+{%load crispy_forms_tags%}
+{%load bootstrap5%}
+{%bootstrap_css%}
+{% load bootstrap_icons %}
+
+
+{% block title %}
+    Borrar Proveedor - SIGEVI
+{% endblock title %}
+    
+
+
+{% block content %}
+    
+<div class="row justify-content-md-center">
+	<div class="col col-lg-5">
+    <form method="post">
+      {%csrf_token%}
+        <div class="card">
+            <div class="card-header">
+              Detalles de Proveedor 
+            </div>
+            <div class="card-body">
+              <h5 class="card-title">Cliente {{object.NIT}} : {{object.razonSocial}}</h5>
+              <p class="card-text">Datos de Proveedor:</p>
+              <p class="card-text">Direccion de Oficinas: {{object.direccionEmpresa}}</p>
+              <p class="card-text">Direccion de Punto de venta: {{object.direccionVentas}}</p>
+              <p class="card-text">Teléfono: {{object.telefono}}</p>
+              <p class="card-text">Correo: {{object.correo}}</p>
+              <h5>Está a punto de borrar estos datos, ¿proceder?</h5>
+              <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                <a  class="btn btn-primary" href="/personas/proveedores/">Atrás</a>
+                <a class="btn btn-info" href="{% url 'personas:proveedorUpdate' object.NIT %}">Volver a Detalles</a>
+                <button class="btn btn-danger" type="submit">Borrar</button>
+            </div>
+            </div>
+        </div>
+    </form>
+    </div>
+</div>
+{% endblock content %}
+    
