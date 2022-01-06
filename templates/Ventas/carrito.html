@@ -1,0 +1,50 @@
+{% load static %}
+{%load bootstrap5%}
+{%bootstrap_css%}
+{% load bootstrap_icons %}
+
+<div class="container-fluid">
+<h3>Carrito de compras</h3>
+         
+
+
+     {% if request.session.carrito.items %}
+         <h5>Total a pagar {{total_carrito}}
+         <a href="{% url 'ventas:pay' %}" class="btn btn-success">Hacer Venta{%bs_icon 'check'%}</a>
+         <a href="{% url 'ventas:PDF' %}" class="btn btn-success">Crear Cotización{%bs_icon 'check'%}</a>
+         <a href="{% url 'ventas:cls' %}" class="btn btn-danger">Eliminar Carrito{%bs_icon 'cart-x'%}</a>
+        </h5>
+         <h6>Listado de productos</h6>
+    <table class="table table-striped table-hover">
+     <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Producto</th>
+          <th scope="col">Cantidad</th>
+          <th scope="col">Precio Unitario</th>
+          <th scope="col">Operacion</th>
+        </tr>
+      </thead>
+     <tbody>
+     {% for key,value in request.session.carrito.items  %}
+        <tr>
+          <th scope="row">{{ value.producto_id }}</th>
+          <td>{{ value.nombre }}</td>
+          <td>{{ value.cantidad }}</td>
+          <td>{{ value.precio }}</td>
+          <td><a href="{% url 'ventas:add' value.producto_id %}" class="btn btn-success">+{%bs_icon 'bag-plus'%}</a>
+              <a href="{% url 'ventas:remove' value.producto_id %}" class="btn btn-warning">-{%bs_icon 'bag-dash'%}</a>
+          </td>
+
+        </tr>
+    {% endfor %}
+    </table>
+
+    {% else %}
+         <div class="alert alert-primary" role="alert">
+             <h6>Añada un elemento al carrito para empezar</h6>
+        </div>
+
+    {% endif %}
+
+</div>

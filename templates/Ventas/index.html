@@ -1,0 +1,87 @@
+{% extends "base/body.html" %}
+{%load crispy_forms_tags%}
+{%load bootstrap5%}
+{%bootstrap_css%}
+{% load bootstrap_icons %}
+{% block title %}
+Ventas - SIGEVI
+    
+{% endblock title %}
+
+
+{% block header %}
+    {% if user.is_authenticated %}
+        Vista de Ventas
+    
+    {% endif %}
+{% endblock header %}
+    
+
+{% block content %}
+  <div class="container-fluid">
+            <div>
+                <form method="get">
+                    {% include './search.html' %}
+                </form>
+            </div>
+        <hr class="dropdown-divider">
+    </div>
+    <table class="table table-striped">
+        <tbody>
+            <td>
+                <table class="table table-striped">
+                    <thead>
+                        <h4>Lista de Productos</h4>
+                        <h6>Seleccione un producto de la lista y de clic en Agregar</h6>                            
+                    </thead>
+                    <tbody>
+                        {% if query %}
+                        
+                        {% for row in query %}
+                        <tr>
+                            <td>{{row.categoria}} {{row.nombre}}</td>
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            Añadir Nuevo
+          </button>
+                            <td><a class="btn btn-success" href="{% url 'ventas:add' row.id %}">Añadir a Carrito</a>
+
+                            </td></tr>
+                        {% endfor %}
+                            
+                            
+                        {% endif %}
+
+                    </tbody>
+                </table>
+            </td>
+            <td>
+                {%include './carrito.html'%}
+            </td>
+        </tbody>
+        
+    </table>
+    <!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Agregar Nuevo Cliente</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form method="post">
+            <div class="modal-body">
+            
+                {{row.categoria}}
+                <input type="text" class="form-control" placeholder="Digite Cantidad del producto" name="nombre" aria-describedby="addon-wrapping">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button class="btn btn-success" type="submit">Guardar</button>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+
+{% endblock content %}
