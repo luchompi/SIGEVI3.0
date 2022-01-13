@@ -1,3 +1,4 @@
+from django.utils.datetime_safe import datetime
 from django.shortcuts import render,redirect
 from django.views.generic import ListView
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
@@ -6,7 +7,14 @@ from .forms import add2cartForm
 from django.views.generic import ListView
 from .carrito import Carrito
 from django.shortcuts import redirect, get_object_or_404
-from django.views.decorators.http import require_POST
+from django.http import FileResponse
+
+from io import BytesIO
+from reportlab.pdfgen import canvas
+from django.http import HttpResponse
+from reportlab.lib.pagesizes import letter, landscape
+from reportlab.lib.pagesizes import A4
+
 
 class index(LoginRequiredMixin,PermissionRequiredMixin,ListView):
     login_url = 'auth/login/'
@@ -32,6 +40,7 @@ def ProductoList(request,pk):
         cantidad = form.cleaned_data['quantity']
         carrito = Carrito(request)
         carrito.add(object,cantidad)
+        return redirect('/venta/')
     else:
         print("form no valido")
     context={'object':object,'form':form}
@@ -42,12 +51,8 @@ def ProductoList(request,pk):
     #Carrito
 
 def agregar_carrito(request,pk):
-    print("consulta")
     producto = Producto.objects.get(id=pk)
-    print("cantidad")
-    print("Carrito")
     carrito=Carrito(request)
-    print("añadir")
     carrito.add(producto)
     return redirect('/venta/')
 
@@ -55,7 +60,7 @@ def eliminar_producto(request,pk):
     carrito = Carrito(request)
     producto = Producto.objects.get(id=pk)
     carrito.remove(producto)
-    return redirect("venta:productoIndex")
+    return redirect('/venta/')
 
 def restar_producto(request,pk):
     carrito = Carrito(request)
@@ -68,6 +73,144 @@ def limpiar(request):
     carrito.clear()
     return redirect("/venta/")
 
+
+
 def pagar(request):
     carrito = Carrito(request)
+    response = HttpResponse(content_type='Application/pdf')
+    d = datetime.today().strftime('%d-%m-%Y')
+    response['Content-Disposition']=f'inline; filename="{d}.pdf"'
+    buffer = BytesIO()
+    p = canvas.Canvas(buffer, pagesize=letter)
+    c_compra = request.session["carrito"]
+    ide = []
+    nombre = []
+    cantidad = []
+    valor = []
+    p_unitario = []
+    aux=0
+    aux1 =0
+    total =0
+    for row in c_compra.keys():
+            ide.append(c_compra[row]["producto_id"])
+            nombre.append(c_compra[row]["nombre"])
+            aux1 =c_compra[row]["cantidad"]
+            cantidad.append(str(aux1))
+            aux = c_compra[row]["acmuluado"]
+            valor.append(str(aux))
+            p_unitario.append(str(c_compra[row]["unitario"]))
+
+    p.setFont("Helvetica",15,leading=None)
+    p.setFillColorRGB(0.29296875,0.453125,0.609375)
+    p.drawString(260,800,"Papeleria Y Variedades Dangedav")
+    p.line(0,780,1000,780)
+    p.line(0,780,1000,778)
+    p.drawString(200,750,"FACTURA DE COMPRA")
+    #render
+    p.setFont("Helvetica",10,leading=None)
+    p.drawString(50,690,"Producto ") 
+    x =670
+    for elemento in nombre:
+        p.drawString(50,x,elemento)
+        x = x -10
+
+    x =670
+    p.drawString(250,690,"Precio Unitario ") 
+    for elemento in p_unitario:
+        p.drawString(250,x,elemento)
+        x = x -10
+    x =670
+    p.drawString(350,690,"Cantidad") 
+    for elemento in cantidad:
+        p.drawString(350,x,elemento)
+        x = x -10
+    x =670
+    p.drawString(450,690,"Subtotal") 
+    for elemento in valor:
+        p.drawString(450,x,elemento)
+        x = x -10  
+    for key, value in request.session["carrito"].items():
+        total += int(value["acmuluado"])
+    p.setFont("Helvetica",15,leading=None)
+    p.drawString(50,50,"Total")
+    p.drawString(400,50,"$") 
+    p.drawString(415,50,str(total))
+    p.setTitle(f'Report on {d}')
+    p.showPage()
+    p.save()
+    pdf = buffer.getvalue()
+    buffer.close()
+    response.write(pdf)
     carrito.pay()
+    return response
+
+def generar_pdf(request):
+    username = request.user.username
+    print (username)
+    response = HttpResponse(content_type='Application/pdf')
+    d = datetime.today().strftime('%d-%m-%Y')
+    response['Content-Disposition']=f'inline; filename="{d}.pdf"'
+    buffer = BytesIO()
+    p = canvas.Canvas(buffer, pagesize=letter)
+    c_compra = request.session["carrito"]
+    ide = []
+    nombre = []
+    cantidad = []
+    valor = []
+    p_unitario = []
+    aux=0
+    aux1 =0
+    total =0
+    for row in c_compra.keys():
+            ide.append(c_compra[row]["producto_id"])
+            nombre.append(c_compra[row]["nombre"])
+            aux1 =c_compra[row]["cantidad"]
+            cantidad.append(str(aux1))
+            aux = c_compra[row]["acmuluado"]
+            valor.append(str(aux))
+            p_unitario.append(str(c_compra[row]["unitario"]))
+
+    p.setFont("Helvetica",15,leading=None)
+    p.setFillColorRGB(0.29296875,0.453125,0.609375)
+    p.drawString(260,800,"Papeleria Y Variedades Dangedav")
+    p.line(0,780,1000,780)
+    p.line(0,780,1000,778)
+    p.drawString(200,750,"FACTURA DE COMPRA")
+    p.drawString(180,25,"Procesado por "+username + " el " + d) 
+
+    #render
+    p.setFont("Helvetica",10,leading=None)
+    p.drawString(50,690,"Producto ") 
+    x =670
+    for elemento in nombre:
+        p.drawString(50,x,elemento)
+        x = x -10
+
+    x =670
+    p.drawString(250,690,"Precio Unitario ") 
+    for elemento in p_unitario:
+        p.drawString(250,x,elemento)
+        x = x -10
+    x =670
+    p.drawString(350,690,"Cantidad") 
+    for elemento in cantidad:
+        p.drawString(350,x,elemento)
+        x = x -10
+    x =670
+    p.drawString(450,690,"Subtotal") 
+    for elemento in valor:
+        p.drawString(450,x,elemento)
+        x = x -10  
+    for key, value in request.session["carrito"].items():
+        total += int(value["acmuluado"])
+    p.setFont("Helvetica",15,leading=None)
+    p.drawString(50,50,"Total")
+    p.drawString(400,50,"$") 
+    p.drawString(415,50,str(total))
+    p.setTitle(f'Report on {d}')
+    p.showPage()
+    p.save()
+    pdf = buffer.getvalue()
+    buffer.close()
+    response.write(pdf)
+    return response

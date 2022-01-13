@@ -28,7 +28,6 @@ class Carrito:
             self.carrito[id]["cantidad"] += 1
             self.carrito[id]["acmuluado"] += producto.precio_compra
         self.save()
-
     
     def save(self):     
         self.session["carrito"]=self.carrito

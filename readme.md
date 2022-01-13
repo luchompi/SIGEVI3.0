@@ -6,6 +6,8 @@ caracteristicas se encuentran funcionales
 
 Sprint No.4:
 A. Ahora, el sistema muestra opciones segun el rol del usuario que inicie sesión
+B. Ahora, el usuario puede indicar la cantidad de productos que se quieren vender
+
 
 1. Configuracion inicial del sistema - DONE
 2. Home Page - DONE
@@ -16,7 +18,7 @@ A. Ahora, el sistema muestra opciones segun el rol del usuario que inicie sesió
     5.2 Gestion de Categorias - DONE
     5.3 Gestion de Productos - DONE
 6. Ventas:
-    6.1 Generar Venta Nueva - Current
+    6.1 Generar Venta Nueva - DONE
 
 
 
