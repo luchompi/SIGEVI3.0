@@ -85,12 +85,8 @@ WSGI_APPLICATION = 'core.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'db_test',
-        'USER': 'postgres',
-        'PASSWORD': 'L4l09599.',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
@@ -146,3 +142,5 @@ LOGOUT_REDIRECT_URL = '/'
 #Cierre de sesion al cerrar navegador
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+CSRF_COOKIE_NAME = "XSRF-TOKEN"
+CART_SESSION_ID = 'cart'

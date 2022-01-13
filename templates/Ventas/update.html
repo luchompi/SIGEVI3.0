@@ -1,0 +1,71 @@
+{% extends 'base/body.html' %}
+{%load crispy_forms_tags%}
+{%load bootstrap5%}
+{%bootstrap_css%}
+{% load bootstrap_icons %}
+
+{% block title %}
+    Detalles de Producto - SIGEVI
+{% endblock title %}
+
+{% block content %}
+<table>
+  <td>
+
+     
+            <div class="card">
+                <div class="card-header">
+                  Detalles de Producto
+                </div>
+                <div class="card-body">
+                  <h5 class="card-title">Producto {{object.identificacion}} : {{object.nombre}}</h5>
+                  <p class="card-text">Datos de Producto:</p>
+                  <p class="card-text">Categoría: {{object.categoria}} </p>
+                  <p class="card-text">Marca: {{object.marca}} </p>
+                  <p class="card-text">Cantidad: {{object.cantidad}} </p>
+                  <p class="card-text">Tipo de cuenta: {{object.unidad}} </p>
+                  <p class="card-text">Precio: {{object.precio_compra}} </p>
+                  <p class="card-text">Proveedor: {{object.proveedor}} </p>
+                  <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                    <a  class="btn btn-primary" href="/venta/">Atrás</a>
+                    <a class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        Añadir a Carrito
+                      </a>
+    
+    
+                  </div>
+                </div>
+            </div>
+
+
+</td>
+  <td>
+    
+      {% include './carrito.html' %}
+
+
+</td>
+</table>
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Editar Detalles de Producto</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form method="POST">
+            <div class="modal-body">
+               <h5 class="card-title">Producto {{object.identificacion}} : {{object.nombre}}</h5>
+                {% csrf_token %}
+                {{form|crispy}}
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <input type="submit" value="buscar" class="btn btn-success">
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock content %}

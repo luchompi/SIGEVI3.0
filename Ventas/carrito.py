@@ -1,3 +1,4 @@
+
 from Gestion.models import Producto
 
 
@@ -12,15 +13,15 @@ class Carrito:
         else:
             self.carrito = carrito
             
-    def add(self,producto):
+    def add(self,producto,cantidad):
         id = str(producto.pk)
         if id not in self.carrito.keys():
             self.carrito[id]={
                 "producto_id": producto.pk,
                 "nombre":producto.nombre,
                 "precio": producto.precio_compra,
-                "cantidad":1,
-                "acmuluado":producto.precio_compra,
+                "cantidad":cantidad,
+                "acmuluado":producto.precio_compra*cantidad,
                 "unitario":producto.precio_compra,
             }
         else:
@@ -60,8 +61,3 @@ class Carrito:
             
         self.session["carrito"] = {}
         self.session.modified = True
-   
-
-
-
-

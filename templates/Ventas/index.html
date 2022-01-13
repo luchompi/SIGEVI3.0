@@ -5,17 +5,17 @@
 {% load bootstrap_icons %}
 {% block title %}
 Ventas - SIGEVI
-    
+
 {% endblock title %}
 
 
 {% block header %}
     {% if user.is_authenticated %}
         Vista de Ventas
-    
+
     {% endif %}
 {% endblock header %}
-    
+
 
 {% block content %}
   <div class="container-fluid">
@@ -32,23 +32,23 @@ Ventas - SIGEVI
                 <table class="table table-striped">
                     <thead>
                         <h4>Lista de Productos</h4>
-                        <h6>Seleccione un producto de la lista y de clic en Agregar</h6>                            
+                        <h6>Seleccione un producto de la lista y de clic en Agregar</h6>
                     </thead>
                     <tbody>
                         {% if query %}
-                        
+
                         {% for row in query %}
                         <tr>
-                            <td>{{row.categoria}} {{row.nombre}}</td>
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-            Añadir Nuevo
-          </button>
-                            <td><a class="btn btn-success" href="{% url 'ventas:add' row.id %}">Añadir a Carrito</a>
-
-                            </td></tr>
+                          <td>{{row.nombre}}</td>
+                          <td>{{row.cantidad}}</td>
+                          <td>{{row.unidad}}</td>
+                          <td>{{row.marca}}</td>
+                          <td><a class="btn btn-info" href="{% url 'ventas:VentaProductoDetalle' row.id %}">Agregar a Venta
+                          </td>
+                          </tr>
                         {% endfor %}
-                            
-                            
+
+
                         {% endif %}
 
                     </tbody>
@@ -58,7 +58,7 @@ Ventas - SIGEVI
                 {%include './carrito.html'%}
             </td>
         </tbody>
-        
+
     </table>
     <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -70,8 +70,7 @@ Ventas - SIGEVI
         </div>
         <form method="post">
             <div class="modal-body">
-            
-                {{row.categoria}}
+              {% include "./details.html" %}
                 <input type="text" class="form-control" placeholder="Digite Cantidad del producto" name="nombre" aria-describedby="addon-wrapping">
             </div>
             <div class="modal-footer">
