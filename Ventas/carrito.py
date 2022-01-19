@@ -1,6 +1,6 @@
 
 from Gestion.models import Producto
-
+from Personas.models import Cliente
 
 class Carrito:
     def __init__(self,request):
@@ -59,4 +59,31 @@ class Carrito:
             object.save()
             
         self.session["carrito"] = {}
+        self.session.modified = True
+
+class Comprador:
+    def __init__(self,request):
+        self.request =  request
+        self.session = request.session
+        comprador = self.session.get("comprador")
+        if not comprador:
+            self.session["comprador"] = {}
+            self.comprador = self.session["comprador"]
+        else:
+            self.comprador = comprador
+    def add(self,cliente):
+        id = str(cliente.pk)
+        if id not in self.comprador.keys():
+            self.comprador[id]={
+                "comprador_id": cliente.pk,
+                "nombre":cliente.nombre,
+                "apellido":cliente.apellido,
+                "telefono": cliente.telefono,
+            }
+        self.save()
+    def save(self):     
+        self.session["comprador"]=self.comprador
+        self.session.modified = True
+    def clear(self):
+        self.session["comprador"] = {}
         self.session.modified = True

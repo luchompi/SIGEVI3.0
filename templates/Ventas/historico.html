@@ -1,0 +1,23 @@
+{% extends "base/body.html" %}
+{% load static %}
+{%load crispy_forms_tags%}
+{%load bootstrap5%}
+{%bootstrap_css%}
+{% load bootstrap_icons %}
+{% block title %}
+Facturas - SIGEVI
+
+{% endblock title %}
+
+
+{% block header %}
+    {% if user.is_authenticated %}
+       <h3>Vista de Facturas</h3> 
+
+    {% endif %}
+{% endblock header %}
+
+
+{% block content %}
+
+{% endblock content %}

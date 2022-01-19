@@ -1,4 +1,5 @@
 {% extends "base/body.html" %}
+{% load static %}
 {%load crispy_forms_tags%}
 {%load bootstrap5%}
 {%bootstrap_css%}
@@ -11,7 +12,15 @@ Ventas - SIGEVI
 
 {% block header %}
     {% if user.is_authenticated %}
-        Vista de Ventas
+    {% if not  request.session.comprador.items %}
+     <form method="POST">
+        {% csrf_token %}
+        Seleccione Cliente {{formCliente|crispy}} <button class="btn btn-success" type="submit">Guardar</button>
+    </form>
+        
+    
+    {% endif %}
+   
 
     {% endif %}
 {% endblock header %}
@@ -82,5 +91,7 @@ Ventas - SIGEVI
     </div>
   </div>
 
-
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'js/jquery-3.6.0.min.js' %}">
 {% endblock content %}

@@ -4,7 +4,17 @@
 {% load bootstrap_icons %}
 
 <div class="container-fluid">
-<h3>Carrito de compras</h3>
+    {% if request.session.comprador.items %}
+        {% for key,value in request.session.comprador.items  %}
+        
+        <h3>Venta, A nombre de: {{value.nombre}} {{value.apellido}} - {{value.comprador_id}} <a href="{% url 'ventas:delComp'%}" class="btn btn-danger">Borrar{%bs_icon 'cart-x'%}</a></h3>
+
+        {%endfor%}
+        
+    {% else %}
+        <h3>Venta, A nombre de: N/A</h3>
+    {% endif %}
+
          
 
 
@@ -52,3 +62,8 @@
     {% endif %}
 
 </div>
+
+   
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'js/jquery-3.6.0.min.js' %}">
