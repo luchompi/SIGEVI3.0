@@ -6,12 +6,11 @@ class Carrito:
     def __init__(self,request):
         self.resquest = request
         self.session = request.session
-        carrito = self.session.get("carrito")
-        if not carrito:
+        if carrito := self.session.get("carrito"):
+            self.carrito = carrito
+        else:
             self.session["carrito"] = {}
             self.carrito = self.session["carrito"]
-        else:
-            self.carrito = carrito
             
     def add(self,producto,cantidad):
         id = str(producto.pk)
@@ -65,12 +64,11 @@ class Comprador:
     def __init__(self,request):
         self.request =  request
         self.session = request.session
-        comprador = self.session.get("comprador")
-        if not comprador:
+        if comprador := self.session.get("comprador"):
+            self.comprador = comprador
+        else:
             self.session["comprador"] = {}
             self.comprador = self.session["comprador"]
-        else:
-            self.comprador = comprador
     def add(self,cliente):
         id = str(cliente.pk)
         if id not in self.comprador.keys():
