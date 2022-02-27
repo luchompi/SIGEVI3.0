@@ -21,8 +21,7 @@ class ClienteCreateView(LoginRequiredMixin,PermissionRequiredMixin,CreateView):
     success_url = '.'
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        consulta=self.request.GET.get('identificacion')
-        if consulta:
+        if consulta := self.request.GET.get('identificacion'):
             context["query"] = Cliente.objects.filter(identificacion__icontains=consulta)
         else:
             context["query"] = Cliente.objects.all()
@@ -69,8 +68,7 @@ class ProveedorCreateView(LoginRequiredMixin,PermissionRequiredMixin,CreateView)
     success_url = "."
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        consulta=self.request.GET.get('NIT')
-        if consulta:
+        if consulta := self.request.GET.get('NIT'):
             context["query"] = Proveedor.objects.filter(NIT__icontains=consulta)
         else:
             context["query"] = Proveedor.objects.all()

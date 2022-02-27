@@ -16,8 +16,7 @@ class MarcaCreateView(LoginRequiredMixin,PermissionRequiredMixin,CreateView):
     success_url = '.'
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        consulta=self.request.GET.get('nombre')
-        if consulta:
+        if consulta := self.request.GET.get('nombre'):
             context["query"] = Marca.objects.filter(nombre__icontains=consulta)
         else:
             context["query"] = Marca.objects.all()
@@ -54,8 +53,7 @@ class CategoriaCreateView(LoginRequiredMixin,PermissionRequiredMixin,CreateView)
     success_url = '.'
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        consulta=self.request.GET.get('marca')
-        if consulta:
+        if consulta := self.request.GET.get('marca'):
             context["query"] = Categoria.objects.filter(nombre__icontains=consulta)
             print(context)
         else:
@@ -99,8 +97,7 @@ class ProductoCreateView(LoginRequiredMixin,PermissionRequiredMixin,CreateView):
     success_url = '.'
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        consulta=self.request.GET.get('nombre')
-        if consulta:
+        if consulta := self.request.GET.get('nombre'):
             context["query"] = Producto.objects.filter(nombre__icontains=consulta)
         else:
             context["query"] = Producto.objects.all()
